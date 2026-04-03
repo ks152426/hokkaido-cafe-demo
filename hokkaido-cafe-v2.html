@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>森のことり cafe | 北海道</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════
+   ROOT & RESET
+═══════════════════════════════ */
+:root {
+  --cream:    #f8f4ee;
+  --off-white:#fdfaf6;
+  --bark:     #5c3d2e;
+  --bark-lt:  #7a5544;
+  --moss:     #6b7c5e;
+  --sage:     #9aaa8c;
+  --mist:     #c4d0b8;
+  --pine:     #3d5040;
+  --gold:     #c4986a;
+  --sand:     #e8dcc8;
+  --charcoal: #2e2a26;
+  --stone:    #7a7068;
+  --snow:     #eef1e8;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--cream);
+  color:var(--charcoal);
+  font-weight:300;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+
+/* ═══════════════════════════════
+   LOADING SCREEN
+═══════════════════════════════ */
+#loading{
+  position:fixed;inset:0;
+  background:var(--pine);
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
+  transition:opacity 0.8s ease, visibility 0.8s ease;
+}
+#loading.hide{opacity:0;visibility:hidden}
+.load-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.4rem,4vw,2rem);
+  font-weight:300;
+  letter-spacing:0.35em;
+  color:rgba(255,255,255,0.9);
+  text-transform:uppercase;
+}
+.load-line{
+  width:60px;height:1px;
+  background:var(--gold);
+  animation:expand 1.5s ease forwards;
+}
+@keyframes expand{from{width:0}to{width:80px}}
+.load-ja{
+  font-family:'Shippori Mincho',serif;
+  font-size:0.75rem;
+  letter-spacing:0.4em;
+  color:rgba(255,255,255,0.45);
+}
+
+/* ═══════════════════════════════
+   HEADER
+═══════════════════════════════ */
+header{
+  position:fixed;top:0;left:0;right:0;
+  z-index:500;
+  padding:22px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:all 0.5s ease;
+}
+header.scrolled{
+  background:rgba(248,244,238,0.95);
+  backdrop-filter:blur(12px);
+  padding:14px 48px;
+  border-bottom:1px solid rgba(92,61,46,0.1);
+}
+
+.logo{
+  text-decoration:none;
+  display:flex;flex-direction:column;
+  line-height:1.2;
+}
+.logo-en{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;font-weight:300;
+  letter-spacing:0.2em;
+  color:var(--off-white);
+  transition:color 0.5s;
+  text-transform:uppercase;
+}
+header.scrolled .logo-en{color:var(--bark)}
+.logo-ja{
+  font-family:'Shippori Mincho',serif;
+  font-size:0.5rem;
+  letter-spacing:0.35em;
+  color:rgba(255,255,255,0.55);
+  transition:color 0.5s;
+}
+header.scrolled .logo-ja{color:var(--stone)}
+
+nav{display:flex;gap:36px;align-items:center}
+nav a{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.7rem;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:rgba(255,255,255,0.8);
+  transition:color 0.3s;
+  position:relative;
+}
+nav a::after{
+  content:'';
+  position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.3s;
+}
+nav a:hover::after{transform:scaleX(1)}
+header.scrolled nav a{color:var(--stone)}
+header.scrolled nav a:hover{color:var(--bark)}
+
+.nav-reserve{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.68rem;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:10px 24px;
+  border:1px solid rgba(255,255,255,0.5);
+  color:rgba(255,255,255,0.9);
+  transition:all 0.3s;
+}
+.nav-reserve:hover{background:rgba(255,255,255,0.15)}
+header.scrolled .nav-reserve{border-color:var(--bark);color:var(--bark)}
+header.scrolled .nav-reserve:hover{background:var(--bark);color:var(--off-white)}
+
+.hamburger{
+  display:none;
+  flex-direction:column;gap:6px;
+  cursor:pointer;background:none;border:none;padding:6px;
+}
+.hamburger span{
+  display:block;width:26px;height:1px;
+  background:var(--off-white);
+  transition:all 0.3s;
+}
+header.scrolled .hamburger span{background:var(--bark)}
+
+/* ═══════════════════════════════
+   MOBILE OVERLAY NAV
+═══════════════════════════════ */
+.nav-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:var(--pine);
+  z-index:600;
+  flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:0;
+}
+.nav-overlay.open{display:flex}
+.nav-overlay a{
+  font-family:'Shippori Mincho',serif;
+  font-size:clamp(1.6rem,5vw,2.2rem);
+  color:rgba(255,255,255,0.85);
+  text-decoration:none;
+  letter-spacing:0.15em;
+  padding:18px 0;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  width:70%;text-align:center;
+  transition:color 0.3s;
+}
+.nav-overlay a:hover{color:var(--gold)}
+.nav-overlay a:first-child{border-top:1px solid rgba(255,255,255,0.08)}
+.overlay-close{
+  position:absolute;top:22px;right:28px;
+  background:none;border:none;
+  font-size:1.5rem;color:rgba(255,255,255,0.6);
+  cursor:pointer;font-family:serif;
+}
+
+/* ═══════════════════════════════
+   HERO — full-screen cinematic
+═══════════════════════════════ */
+#hero{
+  height:100svh;min-height:620px;
+  position:relative;
+  overflow:hidden;
+  background:var(--pine);
+  display:flex;align-items:flex-end;
+  padding-bottom:clamp(48px,8vh,80px);
+  padding-left:clamp(24px,6vw,80px);
+}
+
+/* Background image placeholder with gradient */
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(160deg,
+      rgba(30,44,32,0.55) 0%,
+      rgba(46,42,38,0.35) 60%,
+      rgba(92,61,46,0.25) 100%),
+    linear-gradient(135deg,
+      #3d5040 0%, #4a5c42 30%, #6b7c5e 60%, #5c4a38 100%);
+  background-size:cover;
+}
+
+/* Grain overlay for texture */
+.hero-grain{
+  position:absolute;inset:0;
+  opacity:0.06;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+
+/* Big decorative rotated text */
+.hero-deco-text{
+  position:absolute;
+  right:-4vw;top:50%;
+  transform:translateY(-50%) rotate(90deg);
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(0.55rem,1vw,0.72rem);
+  letter-spacing:0.55em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  white-space:nowrap;
+}
+
+/* Botanical SVG floating */
+.hero-leaf{
+  position:absolute;
+  right:clamp(40px,8vw,120px);
+  top:50%;transform:translateY(-50%);
+  width:clamp(200px,30vw,380px);
+  opacity:0.15;
+  pointer-events:none;
+}
+
+.hero-content{
+  position:relative;
+  max-width:680px;
+}
+.hero-eyebrow{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(0.6rem,1.2vw,0.75rem);
+  letter-spacing:0.5em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:block;
+  margin-bottom:22px;
+  opacity:0;
+  animation:fadeUp 1s 0.8s ease both;
+}
+.hero-h1{
+  font-family:'Shippori Mincho',serif;
+  font-size:clamp(2rem,5.5vw,4rem);
+  font-weight:500;
+  line-height:1.55;
+  color:#fff;
+  letter-spacing:0.05em;
+  margin-bottom:22px;
+  opacity:0;
+  animation:fadeUp 1s 1s ease both;
+}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(0.95rem,2vw,1.2rem);
+  color:rgba(255,255,255,0.65);
+  letter-spacing:0.1em;
+  margin-bottom:40px;
+  opacity:0;
+  animation:fadeUp 1s 1.2s ease both;
+}
+.hero-cta{
+  display:inline-block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.72rem;
+  letter-spacing:0.35em;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:16px 44px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.5);
+  color:#fff;
+  transition:all 0.4s;
+  opacity:0;
+  animation:fadeUp 1s 1.4s ease both;
+}
+.hero-cta:hover{background:rgba(255,255,255,0.12);border-color:#fff}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Scroll indicator */
+.scroll-bar{
+  position:absolute;
+  bottom:0;left:clamp(24px,6vw,80px);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.6rem;letter-spacing:0.45em;
+  text-transform:uppercase;color:rgba(255,255,255,0.4);
+  writing-mode:vertical-lr;
+  animation:scrollPulse 3s ease-in-out infinite;
+}
+.scroll-bar::after{
+  content:'';display:block;
+  width:1px;height:60px;
+  background:linear-gradient(to bottom,rgba(255,255,255,0.4),transparent);
+}
+@keyframes scrollPulse{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(10px)}
+}
+
+/* ═══════════════════════════════
+   MARQUEE BAND
+═══════════════════════════════ */
+.marquee-band{
+  background:var(--bark);
+  padding:14px 0;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.marquee-inner{
+  display:inline-flex;
+  animation:marquee 22s linear infinite;
+}
+.marquee-inner span{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.7rem;
+  letter-spacing:0.5em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.65);
+  padding:0 40px;
+}
+.marquee-inner .dot{color:var(--gold);padding:0 8px}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ═══════════════════════════════
+   SECTION COMMONS
+═══════════════════════════════ */
+.sec{padding:clamp(70px,11vw,120px) clamp(24px,6vw,80px)}
+.sec-label{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.65rem;letter-spacing:0.5em;
+  text-transform:uppercase;color:var(--moss);
+  display:block;margin-bottom:14px;
+}
+.sec-title{
+  font-family:'Shippori Mincho',serif;
+  font-size:clamp(1.6rem,3.8vw,2.8rem);
+  font-weight:500;color:var(--bark);
+  line-height:1.6;letter-spacing:0.05em;
+  margin-bottom:28px;
+}
+.line{
+  width:48px;height:1px;
+  background:var(--gold);margin-bottom:32px;
+}
+.reveal{
+  opacity:0;transform:translateY(32px);
+  transition:opacity 0.8s ease,transform 0.8s ease;
+}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ═══════════════════════════════
+   ABOUT — split layout
+═══════════════════════════════ */
+#about{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  background:var(--off-white);
+  padding:0;
+  min-height:80vh;
+  align-items:stretch;
+}
+.about-visual{
+  position:relative;
+  overflow:hidden;
+  min-height:480px;
+}
+.about-visual-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#a8bc98 0%,#8aaa78 40%,#6b8c5e 70%,#5a7848 100%);
+  transition:transform 0.8s ease;
+}
+.about-visual:hover .about-visual-bg{transform:scale(1.04)}
+.about-img-label{
+  position:absolute;bottom:32px;left:32px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:0.8rem;
+  letter-spacing:0.18em;
+  color:rgba(255,255,255,0.7);
+}
+
+/* Floating badge */
+.about-badge{
+  position:absolute;top:40px;right:40px;
+  width:90px;height:90px;
+  border:1px solid rgba(255,255,255,0.4);
+  border-radius:50%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:4px;
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(4px);
+}
+.about-badge span{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.58rem;letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.8);
+  text-align:center;line-height:1.4;
+}
+
+.about-body{
+  padding:clamp(48px,7vw,96px) clamp(32px,5vw,72px);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.about-body p{
+  font-size:clamp(0.88rem,1.4vw,1rem);
+  line-height:2.2;color:var(--charcoal);
+  margin-bottom:22px;
+}
+
+.feature-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;margin-top:32px;
+}
+.feature-item{
+  padding:18px;
+  border:1px solid rgba(107,124,94,0.2);
+  background:var(--snow);
+}
+.feature-item .fi-en{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.62rem;letter-spacing:0.38em;
+  text-transform:uppercase;color:var(--moss);
+  display:block;margin-bottom:6px;
+}
+.feature-item .fi-ja{
+  font-family:'Shippori Mincho',serif;
+  font-size:0.88rem;color:var(--bark);
+  letter-spacing:0.06em;
+}
+
+/* ═══════════════════════════════
+   CONCEPT — dark immersive
+═══════════════════════════════ */
+#concept{
+  background:var(--charcoal);
+  position:relative;
+  overflow:hidden;
+}
+.concept-bg-text{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(80px,18vw,200px);
+  font-weight:300;
+  letter-spacing:0.05em;
+  color:rgba(255,255,255,0.03);
+  white-space:nowrap;
+  pointer-events:none;
+  user-select:none;
+}
+.concept-inner{
+  max-width:760px;margin:0 auto;
+  text-align:center;position:relative;
+}
+.concept-inner .sec-label{color:var(--sage)}
+.concept-inner .sec-title{color:rgba(255,255,255,0.9)}
+.concept-inner .line{margin:0 auto 32px}
+.concept-inner p{
+  font-size:clamp(0.9rem,1.6vw,1.05rem);
+  line-height:2.4;
+  color:rgba(255,255,255,0.6);
+  margin-bottom:20px;
+}
+.concept-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.1rem,2.5vw,1.5rem);
+  font-style:italic;
+  color:var(--gold);
+  line-height:1.8;
+  margin:40px 0;
+  padding:32px 0;
+  border-top:1px solid rgba(255,255,255,0.1);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+/* ═══════════════════════════════
+   PHOTO GRID
+═══════════════════════════════ */
+.photo-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  height:clamp(300px,45vw,560px);
+  gap:3px;
+  background:var(--charcoal);
+}
+.photo-cell{
+  position:relative;overflow:hidden;
+  cursor:pointer;
+}
+.photo-cell:nth-child(1){grid-row:1/3}
+.photo-cell .swatch{
+  width:100%;height:100%;
+  transition:transform 0.7s ease;
+}
+.photo-cell:hover .swatch{transform:scale(1.06)}
+.photo-cell:nth-child(1) .swatch{background:linear-gradient(145deg,#b8ccaa,#8aaa78,#6b8c5e)}
+.photo-cell:nth-child(2) .swatch{background:linear-gradient(145deg,#d4c4a0,#c0aa80)}
+.photo-cell:nth-child(3) .swatch{background:linear-gradient(145deg,#a8b8c4,#8898ae)}
+.photo-cell:nth-child(4) .swatch{background:linear-gradient(145deg,#c8b8a4,#b0a090)}
+.photo-cell:nth-child(5) .swatch{background:linear-gradient(145deg,#b0c4a8,#90a888)}
+.photo-cell .cap{
+  position:absolute;bottom:20px;left:20px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:0.75rem;
+  letter-spacing:0.15em;
+  color:rgba(255,255,255,0.75);
+  pointer-events:none;
+}
+
+/* ═══════════════════════════════
+   MENU SECTION
+═══════════════════════════════ */
+#menu{background:var(--cream)}
+.menu-wrap{max-width:1100px;margin:0 auto}
+
+.menu-tabs{
+  display:flex;gap:0;margin-bottom:48px;
+  border-bottom:1px solid rgba(92,61,46,0.15);
+}
+.tab-btn{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.72rem;letter-spacing:0.35em;
+  text-transform:uppercase;
+  padding:14px 32px;
+  background:none;border:none;
+  color:var(--stone);cursor:pointer;
+  position:relative;
+  transition:color 0.3s;
+}
+.tab-btn::after{
+  content:'';
+  position:absolute;bottom:-1px;left:0;right:0;
+  height:2px;background:var(--bark);
+  transform:scaleX(0);transition:transform 0.3s;
+}
+.tab-btn.active{color:var(--bark)}
+.tab-btn.active::after{transform:scaleX(1)}
+
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+.menu-list{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+}
+.menu-row{
+  display:flex;justify-content:space-between;
+  align-items:baseline;
+  padding:16px 20px;
+  background:var(--off-white);
+  border-left:0px solid var(--moss);
+  transition:border-left-width 0.2s,background 0.2s;
+}
+.menu-row:hover{
+  border-left-width:3px;
+  background:var(--snow);
+}
+.menu-row-left{}
+.menu-name{
+  font-family:'Shippori Mincho',serif;
+  font-size:0.95rem;color:var(--charcoal);
+  letter-spacing:0.04em;
+}
+.menu-note-small{
+  font-size:0.72rem;color:var(--stone);
+  letter-spacing:0.04em;
+  display:block;margin-top:2px;
+}
+.menu-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;color:var(--bark);
+  letter-spacing:0.06em;
+  white-space:nowrap;
+}
+
+.menu-footer-note{
+  text-align:center;margin-top:36px;
+  font-size:0.78rem;color:var(--stone);letter-spacing:0.08em;
+  padding-top:24px;border-top:1px solid rgba(92,61,46,0.1);
+}
+
+/* ═══════════════════════════════
+   SEASONS BAND
+═══════════════════════════════ */
+.seasons{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--bark);
+}
+.season-item{
+  padding:clamp(32px,4vw,56px) clamp(20px,3vw,40px);
+  border-right:1px solid rgba(255,255,255,0.1);
+  text-align:center;
+  transition:background 0.3s;
+}
+.season-item:last-child{border-right:none}
+.season-item:hover{background:rgba(255,255,255,0.06)}
+.season-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:300;color:var(--gold);
+  opacity:0.5;display:block;margin-bottom:12px;
+}
+.season-en{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.7rem;letter-spacing:0.4em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.5);
+  display:block;margin-bottom:10px;
+}
+.season-ja{
+  font-family:'Shippori Mincho',serif;
+  font-size:clamp(0.9rem,1.5vw,1.1rem);
+  color:rgba(255,255,255,0.85);
+  letter-spacing:0.1em;
+  display:block;
+}
+
+/* ═══════════════════════════════
+   ACCESS
+═══════════════════════════════ */
+#access{background:var(--snow)}
+.access-wrap{
+  max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1.1fr;
+  gap:clamp(40px,6vw,80px);align-items:start;
+}
+.access-info .sec-title{font-size:clamp(1.4rem,3vw,2.2rem)}
+dl.info-dl{}
+.info-dl dt{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.65rem;letter-spacing:0.4em;
+  text-transform:uppercase;color:var(--moss);
+  margin-top:24px;margin-bottom:4px;
+}
+.info-dl dt:first-child{margin-top:0}
+.info-dl dd{
+  font-size:0.92rem;color:var(--charcoal);
+  line-height:1.8;padding-left:0;
+}
+.map-link{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-top:28px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.7rem;letter-spacing:0.3em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--bark);
+  padding-bottom:4px;
+  border-bottom:1px solid var(--gold);
+  transition:opacity 0.3s;
+}
+.map-link:hover{opacity:0.7}
+
+.access-map-block{
+  aspect-ratio:1/1;
+  background:linear-gradient(135deg,#ccd8c0,#b8ccaa);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.access-map-block::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect x='0' y='28' width='60' height='1' fill='rgba(92,61,46,0.12)'/%3E%3Crect x='0' y='46' width='60' height='1' fill='rgba(92,61,46,0.08)'/%3E%3Crect x='28' y='0' width='1' height='60' fill='rgba(92,61,46,0.12)'/%3E%3Crect x='46' y='0' width='1' height='60' fill='rgba(92,61,46,0.08)'/%3E%3C/svg%3E");
+  background-size:60px;
+}
+.map-pin{
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.map-pin::before{
+  content:'';
+  width:20px;height:20px;
+  border-radius:50% 50% 50% 0;
+  background:var(--bark);
+  transform:rotate(-45deg);
+  box-shadow:0 4px 12px rgba(92,61,46,0.4);
+}
+.map-pin span{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.68rem;letter-spacing:0.2em;
+  color:rgba(92,61,46,0.7);
+}
+
+/* ═══════════════════════════════
+   CONTACT
+═══════════════════════════════ */
+#contact{background:var(--off-white)}
+.contact-wrap{max-width:620px;margin:0 auto;text-align:center}
+.contact-wrap .line{margin:0 auto 32px}
+.contact-wrap > p{
+  font-size:0.92rem;color:var(--stone);
+  line-height:2.1;margin-bottom:40px;
+}
+
+.form{display:flex;flex-direction:column;gap:20px;text-align:left}
+.f-group label{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.65rem;letter-spacing:0.38em;
+  text-transform:uppercase;color:var(--moss);
+  margin-bottom:8px;
+}
+.f-group input,.f-group select,.f-group textarea{
+  width:100%;
+  padding:14px 18px;
+  background:var(--cream);
+  border:1px solid rgba(92,61,46,0.15);
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:0.9rem;font-weight:300;
+  color:var(--charcoal);outline:none;
+  border-radius:0;-webkit-appearance:none;
+  transition:border-color 0.3s,background 0.3s;
+}
+.f-group input:focus,.f-group select:focus,.f-group textarea:focus{
+  border-color:var(--moss);background:var(--snow);
+}
+.f-group textarea{min-height:150px;resize:vertical}
+
+.f-submit{
+  align-self:center;
+  padding:17px 64px;
+  background:var(--pine);
+  color:#fff;border:none;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.75rem;letter-spacing:0.4em;
+  text-transform:uppercase;
+  cursor:pointer;transition:background 0.3s,transform 0.2s;
+}
+.f-submit:hover{background:var(--bark);transform:translateY(-2px)}
+
+.sns-bar{
+  display:flex;justify-content:center;gap:16px;
+  margin-top:52px;
+  padding-top:40px;
+  border-top:1px solid rgba(92,61,46,0.1);
+}
+.sns-btn{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.68rem;letter-spacing:0.28em;
+  text-transform:uppercase;text-decoration:none;
+  padding:12px 24px;color:var(--stone);
+  border:1px solid rgba(92,61,46,0.18);
+  transition:all 0.3s;
+}
+.sns-btn:hover{color:var(--bark);border-color:var(--bark)}
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+footer{
+  background:var(--charcoal);
+  padding:clamp(48px,6vw,72px) clamp(24px,5vw,64px) 32px;
+  display:grid;grid-template-columns:1fr auto;
+  gap:40px;align-items:start;
+}
+.footer-brand .f-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:300;
+  letter-spacing:0.25em;text-transform:uppercase;
+  color:rgba(255,255,255,0.8);
+  display:block;margin-bottom:8px;
+}
+.footer-brand .f-logo-ja{
+  font-family:'Shippori Mincho',serif;
+  font-size:0.65rem;letter-spacing:0.35em;
+  color:rgba(255,255,255,0.3);display:block;
+  margin-bottom:20px;
+}
+.footer-brand p{
+  font-size:0.78rem;color:rgba(255,255,255,0.35);
+  line-height:2;letter-spacing:0.06em;
+}
+.footer-links{display:flex;flex-direction:column;gap:14px;align-items:flex-end}
+.footer-links a{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.65rem;letter-spacing:0.3em;
+  text-transform:uppercase;text-decoration:none;
+  color:rgba(255,255,255,0.4);transition:color 0.3s;
+}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{
+  grid-column:1/-1;
+  padding-top:28px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  font-size:0.68rem;color:rgba(255,255,255,0.2);
+  letter-spacing:0.1em;
+}
+
+/* ═══════════════════════════════
+   FLOATING BUTTONS
+═══════════════════════════════ */
+.float-wrap{
+  position:fixed;bottom:28px;right:20px;
+  z-index:400;
+  display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+}
+.float-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.68rem;letter-spacing:0.22em;
+  text-transform:uppercase;text-decoration:none;
+  padding:13px 22px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.18);
+  transition:all 0.3s;white-space:nowrap;
+}
+.float-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.25)}
+.float-btn.primary{background:var(--bark);color:#fff}
+.float-btn.secondary{background:var(--off-white);color:var(--charcoal);border:1px solid rgba(92,61,46,0.18)}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media(max-width:900px){
+  #about{grid-template-columns:1fr}
+  .about-visual{min-height:300px}
+  .access-wrap{grid-template-columns:1fr}
+  .photo-grid{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto;
+    height:auto;
+  }
+  .photo-cell:nth-child(1){grid-row:auto;aspect-ratio:1}
+  .photo-cell{aspect-ratio:1}
+  .menu-list{grid-template-columns:1fr}
+  footer{grid-template-columns:1fr}
+  .footer-links{align-items:flex-start}
+  .seasons{grid-template-columns:1fr 1fr}
+  .season-item:nth-child(2){border-right:none}
+  .season-item:nth-child(3){border-top:1px solid rgba(255,255,255,0.1)}
+}
+@media(max-width:640px){
+  nav{display:none}
+  .hamburger{display:flex}
+  header{padding:16px 24px}
+  header.scrolled{padding:12px 24px}
+  .hero-leaf{display:none}
+  .feature-grid{grid-template-columns:1fr}
+  .menu-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tab-btn{padding:12px 20px;white-space:nowrap}
+  .float-btn{padding:11px 16px;font-size:0.64rem}
+  .seasons{grid-template-columns:1fr 1fr}
+  footer{padding:40px 24px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOADING ══ -->
+<div id="loading">
+  <div class="load-logo">Mori no Kotori</div>
+  <div class="load-line"></div>
+  <div class="load-ja">森のことり cafe — 北海道</div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header id="header">
+  <a class="logo" href="#hero">
+    <span class="logo-en">Mori no Kotori</span>
+    <span class="logo-ja">森のことり cafe · Hokkaido</span>
+  </a>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#access">Access</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="nav-reserve">Reserve</a>
+  </nav>
+  <button class="hamburger" onclick="document.querySelector('.nav-overlay').classList.add('open')" aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ══ MOBILE NAV ══ -->
+<div class="nav-overlay">
+  <button class="overlay-close" onclick="document.querySelector('.nav-overlay').classList.remove('open')">✕</button>
+  <a href="#about"   onclick="closeNav()">About</a>
+  <a href="#menu"    onclick="closeNav()">Menu</a>
+  <a href="#access"  onclick="closeNav()">Access</a>
+  <a href="#contact" onclick="closeNav()">Contact</a>
+  <a href="#contact" onclick="closeNav()">Reserve</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-deco-text">Hokkaido · Natural · Handcrafted · Seasonal</div>
+
+  <!-- Botanical leaf SVG -->
+  <svg class="hero-leaf" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M200 20 C290 80 360 180 330 300 C305 400 220 450 140 420 C70 393 30 320 50 230 C72 140 120 50 200 20Z"
+      stroke="white" stroke-width="1.5" fill="none"/>
+    <path d="M200 20 L200 430" stroke="white" stroke-width="1" opacity="0.7"/>
+    <path d="M200 100 C160 90 125 100 110 125" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <path d="M200 160 C245 148 278 160 290 188" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <path d="M200 220 C158 212 132 224 120 248" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <path d="M200 290 C238 282 262 292 272 316" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <path d="M200 350 C168 344 148 354 140 372" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <circle cx="340" cy="80"  r="24" stroke="rgba(196,152,106,0.5)" stroke-width="1" fill="none"/>
+    <circle cx="60"  cy="400" r="16" stroke="rgba(196,152,106,0.4)" stroke-width="1" fill="none"/>
+    <circle cx="360" cy="340" r="10" stroke="rgba(255,255,255,0.2)" stroke-width="1" fill="none"/>
+  </svg>
+
+  <div class="hero-content">
+    <span class="hero-eyebrow">Opening June 2025 · Hokkaido</span>
+    <h1 class="hero-h1">
+      北海道の自然が<br>育んだ味と、<br>ゆとりの時間を。
+    </h1>
+    <p class="hero-sub">A moment of stillness, a cup of warmth.</p>
+    <a href="#about" class="hero-cta">Discover Our Story</a>
+  </div>
+
+  <div class="scroll-bar">Scroll</div>
+</section>
+
+<!-- ══ MARQUEE ══ -->
+<div class="marquee-band" aria-hidden="true">
+  <div class="marquee-inner">
+    <span>Hokkaido</span><span class="dot">✦</span>
+    <span>Specialty Coffee</span><span class="dot">✦</span>
+    <span>Seasonal Sweets</span><span class="dot">✦</span>
+    <span>Local Ingredients</span><span class="dot">✦</span>
+    <span>Natural Space</span><span class="dot">✦</span>
+    <span>北海道食材</span><span class="dot">✦</span>
+    <span>季節のスイーツ</span><span class="dot">✦</span>
+    <span>こだわりのコーヒー</span><span class="dot">✦</span>
+    <!-- repeat for seamless loop -->
+    <span>Hokkaido</span><span class="dot">✦</span>
+    <span>Specialty Coffee</span><span class="dot">✦</span>
+    <span>Seasonal Sweets</span><span class="dot">✦</span>
+    <span>Local Ingredients</span><span class="dot">✦</span>
+    <span>Natural Space</span><span class="dot">✦</span>
+    <span>北海道食材</span><span class="dot">✦</span>
+    <span>季節のスイーツ</span><span class="dot">✦</span>
+    <span>こだわりのコーヒー</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<section id="about" style="padding:0">
+  <div class="about-visual reveal">
+    <div class="about-visual-bg"></div>
+    <div class="about-badge">
+      <span>EST.<br>2025</span>
+    </div>
+    <div class="about-img-label">店舗写真（オープン後掲載）</div>
+  </div>
+  <div class="about-body reveal">
+    <span class="sec-label">About</span>
+    <h2 class="sec-title">ゆっくりと、<br>じぶん時間を<br>過ごせる場所。</h2>
+    <div class="line"></div>
+    <p>北海道の広い空と澄んだ空気の中で生まれた、小さなカフェです。地元の方にも、旅で訪れる方にも、ほっとできる場所でありたいと思っています。</p>
+    <p>使う食材は、北海道の大地で育ったものを中心に。農家さんや生産者さんと直接つながり、安心しておいしく食べていただけるものをご用意しています。</p>
+    <p>一杯のコーヒー、旬のスイーツ、窓から見える景色。ここで過ごすひとときが、あなたの日常のちいさな宝物になれたら。</p>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <span class="fi-en">Coffee</span>
+        <span class="fi-ja">スペシャルティコーヒー</span>
+      </div>
+      <div class="feature-item">
+        <span class="fi-en">Ingredients</span>
+        <span class="fi-ja">北海道産食材こだわり</span>
+      </div>
+      <div class="feature-item">
+        <span class="fi-en">Sweets</span>
+        <span class="fi-ja">旬のスイーツプレート</span>
+      </div>
+      <div class="feature-item">
+        <span class="fi-en">Space</span>
+        <span class="fi-ja">ゆったり過ごせる空間</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONCEPT ══ -->
+<section id="concept" class="sec">
+  <div class="concept-bg-text">HOKKAIDO</div>
+  <div class="concept-inner reveal">
+    <span class="sec-label">Our Story</span>
+    <h2 class="sec-title">北海道の四季を、<br>カップの中に。</h2>
+    <div class="line"></div>
+    <div class="concept-quote">
+      「春の芽吹き、夏の緑、秋の実り、冬の雪。<br>
+      北海道はいつも、豊かな表情を見せてくれます。」
+    </div>
+    <p>私たちは、この土地で育まれた食材の力を信じています。農家さんの顔が見える野菜、牧場から届く新鮮な乳製品、地元で丁寧に焙煎されたコーヒー。</p>
+    <p>小さなカフェだから、できることがある。一杯一杯、心を込めてお出しする。それが、私たちの約束です。</p>
+  </div>
+</section>
+
+<!-- ══ PHOTO GRID ══ -->
+<div class="photo-grid">
+  <div class="photo-cell"><div class="swatch"></div><span class="cap">Interior</span></div>
+  <div class="photo-cell"><div class="swatch"></div><span class="cap">Coffee</span></div>
+  <div class="photo-cell"><div class="swatch"></div><span class="cap">Sweets</span></div>
+  <div class="photo-cell"><div class="swatch"></div><span class="cap">Foods</span></div>
+  <div class="photo-cell"><div class="swatch"></div><span class="cap">Scenery</span></div>
+</div>
+
+<!-- ══ MENU ══ -->
+<section id="menu" class="sec">
+  <div class="menu-wrap">
+    <div class="reveal" style="margin-bottom:40px">
+      <span class="sec-label">Menu</span>
+      <h2 class="sec-title">旬を感じる、<br>北海道のおいしさ。</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="menu-tabs">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-drink')">Drink</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-sweets')">Sweets</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-food')">Food</button>
+    </div>
+
+    <div id="tab-drink" class="tab-panel active">
+      <div class="menu-list">
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">ブレンドコーヒー</div>
+            <span class="menu-note-small">HOT / ICE</span>
+          </div>
+          <div class="menu-price">¥600</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">カフェラテ</div>
+            <span class="menu-note-small">HOT / ICE</span>
+          </div>
+          <div class="menu-price">¥680</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">デカフェ（ノンカフェイン）</div>
+            <span class="menu-note-small">HOT</span>
+          </div>
+          <div class="menu-price">¥620</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">抹茶ラテ</div>
+            <span class="menu-note-small">HOT / ICE</span>
+          </div>
+          <div class="menu-price">¥700</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">ほうじ茶ラテ</div>
+            <span class="menu-note-small">HOT / ICE</span>
+          </div>
+          <div class="menu-price">¥700</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">道産ハーブティー</div>
+            <span class="menu-note-small">国産オーガニック</span>
+          </div>
+          <div class="menu-price">¥650</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">季節のフルーツソーダ</div>
+            <span class="menu-note-small">季節により変更あり</span>
+          </div>
+          <div class="menu-price">¥720</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">お子様ドリンク</div>
+            <span class="menu-note-small">りんごジュース 100%</span>
+          </div>
+          <div class="menu-price">¥350</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-sweets" class="tab-panel">
+      <div class="menu-list">
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">季節のパフェ</div>
+            <span class="menu-note-small">道産牛乳・卵使用</span>
+          </div>
+          <div class="menu-price">¥1,300</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">道産たまごのプリン</div>
+            <span class="menu-note-small">農家直送たまご</span>
+          </div>
+          <div class="menu-price">¥680</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">バスクチーズケーキ</div>
+            <span class="menu-note-small">道産クリームチーズ</span>
+          </div>
+          <div class="menu-price">¥780</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">フレンチトースト</div>
+            <span class="menu-note-small">道産食パン・卵使用</span>
+          </div>
+          <div class="menu-price">¥980</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">スコーン 2個</div>
+            <span class="menu-note-small">自家製 / ジャム添え</span>
+          </div>
+          <div class="menu-price">¥560</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-food" class="tab-panel">
+      <div class="menu-list">
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">道産野菜のプレートランチ</div>
+            <span class="menu-note-small">スープ・ドリンク付</span>
+          </div>
+          <div class="menu-price">¥1,480</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">旬のキッシュセット</div>
+            <span class="menu-note-small">サラダ付き</span>
+          </div>
+          <div class="menu-price">¥1,200</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">道産チキンサンドイッチ</div>
+            <span class="menu-note-small">スープ付き</span>
+          </div>
+          <div class="menu-price">¥980</div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-row-left">
+            <div class="menu-name">スープ ＋ パンセット</div>
+            <span class="menu-note-small">本日のスープ / 日替わり</span>
+          </div>
+          <div class="menu-price">¥750</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="menu-footer-note">※メニュー内容・価格は変更になる場合がございます。季節限定メニューもご用意します。</p>
+  </div>
+</section>
+
+<!-- ══ SEASONS ══ -->
+<div class="seasons">
+  <div class="season-item reveal">
+    <span class="season-num">01</span>
+    <span class="season-en">Spring</span>
+    <span class="season-ja">春のめぶき</span>
+  </div>
+  <div class="season-item reveal">
+    <span class="season-num">02</span>
+    <span class="season-en">Summer</span>
+    <span class="season-ja">夏の緑風</span>
+  </div>
+  <div class="season-item reveal">
+    <span class="season-num">03</span>
+    <span class="season-en">Autumn</span>
+    <span class="season-ja">秋の実り</span>
+  </div>
+  <div class="season-item reveal">
+    <span class="season-num">04</span>
+    <span class="season-en">Winter</span>
+    <span class="season-ja">冬の静けさ</span>
+  </div>
+</div>
+
+<!-- ══ ACCESS ══ -->
+<section id="access" class="sec">
+  <div class="access-wrap">
+    <div class="access-info reveal">
+      <span class="sec-label">Access</span>
+      <h2 class="sec-title">お越しください</h2>
+      <div class="line"></div>
+      <dl class="info-dl">
+        <dt>店舗名</dt>
+        <dd>森のことり cafe<br><small style="opacity:0.6">Mori no Kotori</small></dd>
+        <dt>住所</dt>
+        <dd>北海道 ○○郡 ○○町 ○○番地<br>（詳細はオープン前にご案内）</dd>
+        <dt>営業時間</dt>
+        <dd>10:00 〜 17:00（L.O. 16:30）</dd>
+        <dt>定休日</dt>
+        <dd>水曜日・木曜日<br>（祝日は営業、臨時休業あり）</dd>
+        <dt>駐車場</dt>
+        <dd>あり（○台） · 無料</dd>
+        <dt>Instagram</dt>
+        <dd>@mori_no_kotori_cafe</dd>
+      </dl>
+      <a href="#" class="map-link">Google Map で見る →</a>
+    </div>
+    <div class="access-map-block reveal">
+      <div class="map-pin">
+        <span>森のことり cafe</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact" class="sec">
+  <div class="contact-wrap">
+    <span class="sec-label">Contact</span>
+    <h2 class="sec-title">お問い合わせ</h2>
+    <div class="line"></div>
+    <p>ご質問・取材のご依頼・開店前のご予約登録など、<br>お気軽にお問い合わせください。</p>
+
+    <div class="form reveal">
+      <div class="f-group">
+        <label>お名前</label>
+        <input type="text" placeholder="山田 花子">
+      </div>
+      <div class="f-group">
+        <label>メールアドレス</label>
+        <input type="email" placeholder="example@mail.com">
+      </div>
+      <div class="f-group">
+        <label>お問い合わせ種別</label>
+        <select>
+          <option value="">選択してください</option>
+          <option>一般的なお問い合わせ</option>
+          <option>ご予約について</option>
+          <option>取材・メディア</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <div class="f-group">
+        <label>メッセージ</label>
+        <textarea placeholder="ご自由にご記入ください。"></textarea>
+      </div>
+      <button class="f-submit" type="button">Send Message</button>
+    </div>
+
+    <div class="sns-bar">
+      <a href="#" class="sns-btn">Instagram</a>
+      <a href="#" class="sns-btn">LINE 公式</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-brand">
+    <span class="f-logo">Mori no Kotori</span>
+    <span class="f-logo-ja">森のことり cafe · Hokkaido</span>
+    <p>北海道 ○○郡 ○○町<br>
+    OPEN 10:00〜17:00 ／ 水・木 定休<br>
+    info@mori-no-kotori.cafe</p>
+  </div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#access">Access</a>
+    <a href="#contact">Contact</a>
+    <a href="#">Instagram</a>
+  </div>
+  <div class="footer-copy">© 2025 Mori no Kotori Cafe. All Rights Reserved.</div>
+</footer>
+
+<!-- ══ FLOATING BUTTONS ══ -->
+<div class="float-wrap">
+  <a href="#contact" class="float-btn primary">ご予約・お問い合わせ</a>
+  <a href="#" class="float-btn secondary">📷 Instagram</a>
+</div>
+
+<!-- ══ JS ══ -->
+<script>
+// Loading screen
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hide');
+  }, 1600);
+});
+
+// Header scroll state
+window.addEventListener('scroll', () => {
+  const h = document.getElementById('header');
+  h.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Intersection observer for reveal animations
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      e.target.style.transitionDelay = `${i * 0.08}s`;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Tab switcher
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// Mobile nav close
+function closeNav() {
+  document.querySelector('.nav-overlay').classList.remove('open');
+}
+</script>
+
+</body>
+</html>
